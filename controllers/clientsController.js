@@ -1,7 +1,9 @@
+const mongoose = require('mongoose');
+const Clients = require('../models/Clients');
 //@desc - Get all clients from the database
 //@route - GET /api/v1/clients
 //@access- private
-exports.getClients = (req, res, next) => {
+exports.getClients = async (req, res, next) => {
 	res.status(200).json({
 		msg: 'All the clients',
 		success: true,
@@ -21,10 +23,12 @@ exports.getClient = (req, res, next) => {
 //@desc - Add a client
 //@route - POST /api/v1/clients
 //@access- Private
-exports.addClient = (req, res, next) => {
+exports.addClient = async (req, res, next) => {
+	const client = await Clients.create(req.body);
 	res.status(200).json({
 		msg: 'clients Added',
 		success: true,
+		data: client,
 	});
 };
 //@desc - Delete a client
