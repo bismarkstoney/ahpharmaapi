@@ -1,6 +1,6 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
-const pharmacyScheme = mongoose.Schema(
+const pharmacyScheme = new mongoose.Schema(
 	{
 		name: {
 			type: String,
@@ -14,7 +14,7 @@ const pharmacyScheme = mongoose.Schema(
 			required: [true, 'Please enter city'],
 		},
 		district: {
-			city: String,
+			type: String,
 			required: [true, 'Please enter city'],
 		},
 		phoneNumber: {
@@ -23,12 +23,13 @@ const pharmacyScheme = mongoose.Schema(
 		},
 		logo: {
 			type: String,
+			default: 'logo.png',
 		},
-		team: {
-			type: mongoose.Schema.Types.ObjectId,
-			required: true,
-			ref: 'User',
-		},
+		// team: {
+		// 	type: mongoose.Schema.Types.ObjectId,
+		// 	required: true,
+		// 	ref: 'User',
+		// },
 		medicalHistroy: [
 			{
 				fullname: {
@@ -62,5 +63,4 @@ const pharmacyScheme = mongoose.Schema(
 	{ timestamps: true }
 );
 
-const Pharmacy = mongoose.model('Pharmacy', pharmacyScheme);
-export default Pharmacy;
+module.exports = mongoose.model('Pharmacy', pharmacyScheme);

@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const teamSchema = mongoose.Schema(
 	{
@@ -10,10 +10,7 @@ const teamSchema = mongoose.Schema(
 			type: String,
 			required: [true, 'Please add an email'],
 		},
-		passowrd: {
-			type: String,
-			required: [true, 'Please add a password'],
-		},
+
 		phone: {
 			type: String,
 			required: [true, 'Please a phone number'],
@@ -26,5 +23,4 @@ const teamSchema = mongoose.Schema(
 	{ timestamps: true }
 );
 
-const Team = mongoose.model('Team', teamSchema);
-export default Team;
+module.exports = mongoose.model('Team', teamSchema);
