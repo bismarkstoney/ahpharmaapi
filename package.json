@@ -1,0 +1,18 @@
+{
+	"name": "phamarcyapi",
+	"version": "1.0.0",
+	"description": "phamarcy app backend",
+	"main": "server.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "set NODE_ENV=production&&node server.js",
+		"dev": "nodemon server"
+	},
+	"author": "bismark Obeng",
+	"license": "ISC",
+	"dependencies": {
+		"dotenv": "^8.2.0",
+		"express": "^4.17.1",
+		"morgan": "^1.10.0"
+	}
+}
