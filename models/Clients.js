@@ -10,7 +10,7 @@ const clientScheme = new mongoose.Schema({
 	phoneNumber: {
 		type: String,
 		required: [true, 'Please add a phone number'],
-		unique: [true, 'Phone number alredy taken'],
+		unique: [true, 'Phone number already taken'],
 	},
 	dob: {
 		type: Date,
@@ -18,7 +18,7 @@ const clientScheme = new mongoose.Schema({
 	},
 	gender: {
 		type: String,
-		required: true,
+		required: [true, 'Please select Gender'],
 		enum: ['Male', 'Female'],
 	},
 	email: {

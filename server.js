@@ -5,6 +5,7 @@ const databaseConnection = require('./config/db');
 const clientRouter = require('./routes/clientRouter');
 const phamarcyRouter = require('./routes/phamarcyRouter');
 const teamRouter = require('./routes/teamRouter');
+const errorHandler = require('./middleware/error');
 dotenv.config({ path: './config/config.env' });
 
 const app = express();
@@ -16,6 +17,7 @@ if (process.env.NODE_ENV === 'development') {
 app.use('/api/v1/clients', clientRouter);
 app.use('/api/v1/phamarcy', phamarcyRouter);
 app.use('/api/v1/teams', teamRouter);
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
