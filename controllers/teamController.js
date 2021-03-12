@@ -20,7 +20,7 @@ exports.getTeams = asyncHandler(async (req, res, next) => {
 
 exports.getTeam = asyncHandler(async (req, res, next) => {
 	const team = await Team.findById(req.params.id);
-	if (!phamarcy) {
+	if (!team) {
 		return next(
 			new ErrorResponse(`team member  not found with id ${req.params.id}`, 404)
 		);
@@ -63,7 +63,7 @@ exports.deleteTeam = asyncHandler(async (req, res, next) => {
 //@route - UPDATE /api/v1/teams/:id
 //@access- Private
 exports.updateTeam = asyncHandler(async (req, res, next) => {
-	const team = await team.findByIdAndUpdate(req.params.id, req.body, {
+	const team = await Team.findByIdAndUpdate(req.params.id, req.body, {
 		runValidators: true,
 		new: true,
 	});

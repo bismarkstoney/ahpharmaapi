@@ -6,7 +6,10 @@ const asyncHandler = require('../middleware/async');
 //@route - GET /api/v1/clients
 //@access- private
 exports.getClients = asyncHandler(async (req, res, next) => {
-	const clients = await Clients.find();
+	const clients = await Clients.find().populate({
+		path: 'phamarcy',
+		select: 'name',
+	});
 	res.status(200).json({
 		results: clients.length,
 		msg: 'All the clients',
@@ -73,7 +76,7 @@ exports.updateClient = asyncHandler(async (req, res, next) => {
 		);
 	}
 	res.status(200).json({
-		msg: 'clients Added',
+		msg: 'clients updated',
 		success: true,
 		data: client,
 	});
