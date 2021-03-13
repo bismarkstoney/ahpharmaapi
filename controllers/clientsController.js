@@ -39,6 +39,9 @@ exports.getClient = asyncHandler(async (req, res, next) => {
 //@route - POST /api/v1/clients
 //@access- Private
 exports.addClient = asyncHandler(async (req, res, next) => {
+	//Add phamarcy and team
+	req.body.phamarcy = req.phamarcy._id;
+	req.body.team = req.team._id;
 	const client = await Clients.create(req.body);
 	res.status(200).json({
 		msg: 'clients Added',
