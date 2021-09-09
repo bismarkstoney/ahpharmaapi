@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const clientScheme = new mongoose.Schema(
 	{
-		fullname: {
+		name: {
 			type: String,
 			required: [true, 'Please add client full name'],
 			minLength: [1, 'Name is too short'],
@@ -11,7 +11,7 @@ const clientScheme = new mongoose.Schema(
 		phoneNumber: {
 			type: String,
 			required: [true, 'Please add a phone number'],
-			unique: [true, 'Phone number already taken'],
+			//unique: [true, 'Phone number already taken'],
 		},
 		dob: {
 			type: Date,
@@ -20,11 +20,14 @@ const clientScheme = new mongoose.Schema(
 		gender: {
 			type: String,
 			required: [true, 'Please select Gender'],
-			enum: ['Male', 'Female'],
 		},
 		age: {
 			type: Number,
 			required: [true, 'Age is required'],
+		},
+		medicalCondition: {
+			type: String,
+			required: [true, 'Medical Condition is required'],
 		},
 		email: {
 			type: String,
@@ -37,18 +40,7 @@ const clientScheme = new mongoose.Schema(
 			type: String,
 		},
 		region: String,
-		drug: {
-			type: [String],
-			required: [true, 'Please add a drug'],
-		},
-		startDate: {
-			type: Date,
-			required: [true, 'Please add starting date'],
-		},
-		endDate: {
-			type: Date,
-			required: [true, 'Please add ending date'],
-		},
+
 		photo: {
 			type: String,
 			default: 'no.jpg',
@@ -58,13 +50,25 @@ const clientScheme = new mongoose.Schema(
 			ref: 'Pharmacy',
 			required: [true, 'Please add a phamarcy'],
 		},
-		team: {
+		user: {
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'Team',
+			ref: 'User',
 			required: [true, 'Please add a team member'],
 		},
 	},
 	{ timestamps: true }
 );
 
+clientScheme.virtual('drug', {
+	ref: 'Drug',
+	localField: '_id',
+	foreignField: 'client',
+	justOne: false,
+});
+
+clientScheme.virtual('id').get(function () {
+	return this._id.toHexString();
+});
+clientScheme.set('toObject', { virtuals: true });
+clientScheme.set('toJSON', { virtuals: true });
 module.exports = mongoose.model('Clients', clientScheme);

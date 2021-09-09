@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
+const upload = require('../middleware/multer');
 
 const {
 	getPhamarcy,
@@ -11,11 +12,11 @@ const {
 	addPhoto,
 } = require('../controllers/pharmacyController');
 router.route('/:id/photo').put(addPhoto);
-router.route('/').post(addPhamarcy).get(getPhamarcies);
+router.route('/').post(upload.single('logo'), addPhamarcy).get(getPhamarcies);
 
 router
 	.route('/:id')
-	.put(updatePhamarcy)
+	.put(upload.single('logo'), updatePhamarcy)
 	.delete(deletePhamarcy)
 	.get(getPhamarcy);
 

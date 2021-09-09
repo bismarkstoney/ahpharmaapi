@@ -2,17 +2,19 @@ const path = require('path');
 const dotenv = require('dotenv');
 const Phamarcy = require('../models/PharmacyModel');
 const fileupload = require('express-fileupload');
+const User = require('../models/userModel');
 const ErrorResponse = require('../utils/errorResponse');
 const APIFeatures = require('../utils/apiFeaures');
 const asyncHandler = require('../middleware/async');
 dotenv.config({ path: './config/config.env' });
+const mongoose = require('mongoose');
 //@desc - Get all phamarcies  from the database
 //@route - GET /api/v1/phamarcy
 //@access- private
 exports.getPhamarcies = asyncHandler(async (req, res, next) => {
 	//ExECUTE THE QUERY
 	const features = new APIFeatures(
-		Phamarcy.find().populate('clients'),
+		Phamarcy.find().populate('clients').populate('rating'),
 		req.query
 	)
 		.filter()
@@ -20,14 +22,12 @@ exports.getPhamarcies = asyncHandler(async (req, res, next) => {
 		.limitFields()
 		.paginate();
 	const phamarcy = await features.query;
-
-	res.status(200).json({
-		status: 'success',
-		results: phamarcy.length,
-		data: {
-			phamarcy,
-		},
-	});
+	res.send(phamarcy);
+	// res.status(200).json({
+	// 	status: 'success',
+	// 	results: phamarcy.length,
+	// 	data: phamarcy,
+	// });
 });
 //@desc - Get a single client from the database
 //@route - GET /api/v1/phamacy/:id
@@ -51,7 +51,19 @@ exports.getPhamarcy = asyncHandler(async (req, res, next) => {
 //@route - POST /api/v1/phamarcy
 //@access- Private
 exports.addPhamarcy = asyncHandler(async (req, res, next) => {
-	const phamarcy = await Phamarcy.create(req.body);
+	// const user = await User.findById(req.params.id);
+	//add a user
+	//req.body.user = req.user.id;
+	// if (!user) return res.status(400).send('user not found');
+	const phamarcy = await Phamarcy.create({
+		//_id: new mongoose.Types.ObjectId(),
+		name: req.body.name,
+		email: req.body.email,
+		phoneNumber: req.body.phoneNumber,
+		city: req.body.city,
+		district: req.body.district,
+		user: req.body.user,
+	});
 	res.status(200).json({
 		msg: 'phamarcys Added',
 		success: true,
@@ -89,7 +101,7 @@ exports.addPhoto = asyncHandler(async (req, res, next) => {
 
 	//create a custome file name
 	file.name = `photo_${phamarcy._id}${path.parse(file.name).ext}`;
-	console.log(file.name);
+	//console.log(file.name);
 
 	file.mv(`${process.env.FILE_UPLOAD_PATH}/${file.name}`, async (err) => {
 		if (err) {
@@ -126,16 +138,28 @@ exports.deletePhamarcy = asyncHandler(async (req, res, next) => {
 //@route - UPDATE /api/v1/clients/:id
 //@access- Private
 exports.updatePhamarcy = asyncHandler(async (req, res, next) => {
-	const phamarcy = await Phamarcy.findByIdAndUpdate(req.params.id, req.body, {
-		runValidators: true,
-		new: true,
-	});
+	const phamarcy = await Phamarcy.findByIdAndUpdate(
+		req.params.id,
+
+		{
+			name: req.body.name,
+			email: req.body.email,
+			city: req.body.city,
+			district: req.body.district,
+			phoneNumber: req.body.phoneNumber,
+		},
+		{
+			runValidators: true,
+			new: true,
+		}
+	);
+	//console.log(phamarcy);
 	if (!phamarcy) {
 		return next(
 			new ErrorResponse(`phamarcy not found with id ${req.params.id}`, 404)
 		);
 	}
-	res.status(200).json({
+	res.status(201).json({
 		msg: 'phamarcys Added',
 		success: true,
 		data: phamarcy,

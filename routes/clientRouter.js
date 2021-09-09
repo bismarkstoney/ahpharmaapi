@@ -1,23 +1,23 @@
 const express = require('express');
 const router = express.Router();
 const { protect, authorize } = require('../middleware/auth');
-
+const upload = require('../middleware/multer');
 const {
 	getClients,
 	getClient,
 	deleteClient,
 	addClient,
 	updateClient,
+	getClientDate,
 } = require('../controllers/clientsController');
 
-router
-	.route('/')
-	.post(protect, authorize('team', 'admin'), addClient)
-	.get(protect, authorize('team', 'admin'), getClients);
+router.route('/name').get(getClientDate, getClients);
+router.route('/').post(upload.single('photo'), addClient).get(getClients);
+
 router
 	.route('/:id')
-	.put(protect, authorize('team', 'admin'), updateClient)
-	.delete(protect, authorize('team', 'admin'), deleteClient)
+	.put(upload.single('photo'), updateClient)
+	.delete(deleteClient)
 	.get(protect, authorize('team', 'admin'), getClient);
 
 module.exports = router;
