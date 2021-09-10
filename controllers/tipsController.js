@@ -61,7 +61,7 @@ exports.addTip = asyncHandler(async (req, res, next) => {
 		_id: new mongoose.Types.ObjectId(),
 		title: req.body.title,
 		description: req.body.description,
-		image: `${baseTwo}${fileName}`,
+		image: `${basePath}${fileName}`,
 		user: req.body.user,
 	});
 
