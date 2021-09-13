@@ -164,7 +164,7 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
 			name: req.body.name,
 			phone: req.body.phone,
 			email: req.body.email,
-			picture: `${basePath }${fileName}`,
+			picture: `${basePath}${fileName}`,
 			//pushToken: req.body.pushToken,
 			role: req.body.role,
 			//phamarcy: req.body.phamarcy,
