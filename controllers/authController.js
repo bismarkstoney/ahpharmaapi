@@ -174,11 +174,11 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
 				new: true,
 			}
 		);
-		if (!user) {
-			return next(
-				new ErrorResponse(`user not found with id ${req.params.id}`, 404)
-			);
-		}
+// 		if (!user) {
+// 			return next(
+// 				new ErrorResponse(`user not found with id ${req.params.id}`, 404)
+// 			);
+// 		}
 
 		res.status(200).json({
 			msg: 'user updated',
