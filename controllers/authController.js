@@ -151,6 +151,12 @@ exports.getUser = asyncHandler(async (req, res, next) => {
 });
 
 exports.updateUser = asyncHandler(async (req, res, next) => {
+	const file = req.file;
+	// if (!file) {
+	// 	return res.status(400).send('No Image in the request');
+	// }
+	const basePath = `${req.protocol}://${req.get('host')}/uploads/`;
+	const fileName = req.file.filename;
 	const user = await User.findByIdAndUpdate(
 		req.params.id,
 
@@ -158,10 +164,10 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
 			name: req.body.name,
 			phone: req.body.phone,
 			email: req.body.email,
-			//picture: `${baseTwo}${fileName}`,
-			pushToken: req.body.pushToken,
+			picture: `${basePath }${fileName}`,
+			//pushToken: req.body.pushToken,
 			role: req.body.role,
-			phamarcy: req.body.phamarcy,
+			//phamarcy: req.body.phamarcy,
 		},
 		{
 			runValidators: true,
