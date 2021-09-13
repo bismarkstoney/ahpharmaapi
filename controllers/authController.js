@@ -153,43 +153,60 @@ exports.getUser = asyncHandler(async (req, res, next) => {
 
 
 exports.updateUser = asyncHandler(async (req, res, next) => {
-	try {
-		
-		const basePath = `${req.protocol}://${req.get('host')}/uploads/`;
-		const fileName = req.file.filename;
-		const user = await User.findByIdAndUpdate(
-			req.params.id,
+	
+	const file = req.file;
+	// if (!file) {
+	// 	return res.status(400).send('No Image in the request');
+	// }
+	const basePath = `${req.protocol}://${req.get('host')}/uploads/`;
+	const fileName = req.file.filename;
+	const user = await User.findByIdAndUpdate(
+		req.params.id,
 
-			{
-				name: req.body.name,
-				phone: req.body.phone,
-				email: req.body.email,
-				picture: `${basePath}${fileName}`,
-				//pushToken: req.body.pushToken,
-				role: req.body.role,
-				//phamarcy: req.body.phamarcy,
-			},
-			{
-				runValidators: true,
-				new: true,
-			}
+		{
+			name: req.body.name,
+			phone: req.body.phone,
+			email: req.body.email,
+			picture: `${basePath}${fileName}`,
+			//pushToken: req.body.pushToken,
+			role: req.body.role,
+			//phamarcy: req.body.phamarcy,
+		},
+		{
+			runValidators: true,
+			new: true,
+		}
+	);
+	if (!user) {
+		return next(
+			new ErrorResponse(`user not found with id ${req.params.id}`, 404)
 		);
-// 		if (!user) {
-// 			return next(
-// 				new ErrorResponse(`user not found with id ${req.params.id}`, 404)
-// 			);
-// 		}
-
-		res.status(200).json({
-			msg: 'user updated',
-			success: true,
-			data: user,
-		});
-	} catch (error) {
-		console.log(error.message);
 	}
 
+	res.status(200).json({
+		msg: 'user updated',
+		success: true,
+		data: user,
+	});
+	// let user = await User.findByIdAndUpdate(
+	// 	req.params.id,
+	// 	{
+	// 		name: req.body.name,
+	// 		phone: req.body.phone,
+	// 		email: req.body.email,
+	// 		picture: `${baseTwo}${fileName}`,
+	// 	},
+	// 	{ new: true, runValidators: true }
+	// );
+	// console.log(user);
+	// user.save();
+	//res.send(updatedUser);
 
+	// res.status(400);
+	// throw new ErrorResponse('Invalid userData ', 404);
+	//sendTokemResponse(user, 200, res);
+	
+	
 });
 
 
