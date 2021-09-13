@@ -36,12 +36,14 @@ const UserSchema = new mongoose.Schema(
 			type: String,
 			enum: ['user', 'admin', 'team'],
 			default: 'user',
+			trim:true
 		},
 		pushToken: {
 			type: String,
 		},
 		picture: {
 			type: String,
+			default: 'user.jpg',
 		},
 
 		phamarcy: {
