@@ -155,9 +155,9 @@ exports.getUser = asyncHandler(async (req, res, next) => {
 exports.updateUser = asyncHandler(async (req, res, next) => {
 	
 	const file = req.file;
-	// if (!file) {
-	// 	return res.status(400).send('No Image in the request');
-	// }
+	if (!file) {
+		return res.status(400).send('No Image in the request');
+	}
 	const basePath = `${req.protocol}://${req.get('host')}/uploads/`;
 	const fileName = req.file.filename;
 	const user = await User.findByIdAndUpdate(
